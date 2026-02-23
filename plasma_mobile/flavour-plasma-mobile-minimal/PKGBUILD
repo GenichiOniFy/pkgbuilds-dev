@@ -14,7 +14,7 @@ license=(GPL3)
 depends=(
     plasma-nm
     plasma-mobile-settings
-    maliit-keyboard
+    plasma-keyboard
     plasma-settings
     hfd-service
     plasma-mobile
