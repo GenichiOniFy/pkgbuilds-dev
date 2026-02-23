@@ -1,0 +1,40 @@
+# Maintainer: Danct12 <danct12@disroot.org>
+_mode=host
+pkgname=plasma-mobile-sounds
+pkgdesc="Sound Theme for Plasma Mobile by KDE"
+pkgver=0.1.r12.gada709b
+pkgrel=1
+_arches=all
+arch=(
+    x86_64
+    armv7h
+    aarch64
+)
+license=(
+    CCPL
+    GPL-3.0-or-later
+)
+makedepends=(
+    cmake
+    extra-cmake-modules
+)
+_commit=ada709b6ae66f8ef679ec85cf259401a53d18929
+source=(
+    "git+https://invent.kde.org/plasma-mobile/plasma-mobile-sounds.git#commit=$_commit"
+)
+sha256sums=(
+    SKIP
+)
+
+pkgver() {
+    cd "$pkgname"
+    git describe --long --abbrev=7 --tags "$_commit" | sed 's/^v//;s/\([^-]*-g\)/r\1/;s/-/./g'
+}
+
+build() {
+    cmake -B build -S "$pkgname"
+}
+
+package() {
+    DESTDIR="$pkgdir" cmake --install build
+}

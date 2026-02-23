@@ -1,0 +1,4 @@
+iio-sensor-proxy
+iio-sensor-proxy-*.tar.*
+*.patch
+

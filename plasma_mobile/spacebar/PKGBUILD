@@ -1,0 +1,73 @@
+# Maintainer: Danct12 <danct12@disroot.org>
+# Contributor: Bernhard Landauer <bernhard@manjaro.org>
+# Contributor: dodgejcr@gmail.com
+# Contributor: Bhushan Shah <bhush94 at gmail dot com>
+# Contributor: Devin Lin <devin@kde.org>
+_mode=host
+_crossdirect=false
+pkgname=spacebar
+pkgdesc="SMS and messaging application for Mobile Devices running Plasma"
+pkgver=6.4.2.r0.gc71736b
+pkgrel=1
+_arches=all
+arch=(
+    x86_64
+    armv7h
+    aarch64
+)
+license=(GPL-3.0-or-later)
+depends=(
+    c-ares
+    futuresql-qt6
+    kconfig
+    kcoreaddons
+    kcontacts
+    kdbusaddons
+    ki18n
+    kio
+    kirigami
+    kirigami-addons
+    knotifications
+    kpeople
+    kwindowsystem
+    libphonenumber
+    modemmanager-qt
+    qcoro-qt6
+    qt6-declarative
+)
+makedepends=(
+    cmake
+    extra-cmake-modules
+)
+_commit=c71736be6252ba181c512c5f70f028ee9fcaed09
+source=(
+    "git+https://invent.kde.org/plasma-mobile/spacebar.git#commit=$_commit"
+)
+sha256sums=(
+    SKIP
+)
+
+pkgver() {
+    cd "$pkgname"
+    git describe --long --abbrev=7 --tags "$_commit" | sed 's/^v//;s/\([^-]*-g\)/r\1/;s/-/./g'
+}
+
+prepare() {
+    mkdir -p build
+}
+
+build() {
+    cd build
+    cmake ../spacebar \
+        -DCMAKE_INSTALL_PREFIX=/usr \
+        -DBUILD_TESTING=OFF \
+        -DKDE_INSTALL_LIBDIR=lib \
+        -DKDE_INSTALL_USE_QT_SYS_PATHS=ON \
+        -DCMAKE_BUILD_TYPE=Release
+    make
+}
+
+package() {
+    cd build
+    make DESTDIR="$pkgdir/" install
+}
